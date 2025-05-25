@@ -14,6 +14,51 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from server using import!' });
 });
 
+app.get("/reported-patients", async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT 
+        p.id,
+        p.name,
+        COALESCE(json_agg(r.content) FILTER (WHERE r.content IS NOT NULL), '[]') AS reports
+      FROM patients p
+      LEFT JOIN reports r ON p.id = r.patient_id
+      GROUP BY p.id, p.name
+      ORDER BY p.id;
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Failed to fetch reported patients:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/relative/:relativeId/reports", async (req, res) => {
+  const { relativeId } = req.params;
+  try {
+    const { rows } = await pool.query(`
+      SELECT 
+        p.name AS patient_name,
+        COALESCE(json_agg(r.content) FILTER (WHERE r.content IS NOT NULL), '[]') AS reports
+      FROM relatives rel
+      JOIN patients p ON rel.patient_id = p.id
+      LEFT JOIN reports r ON p.id = r.patient_id
+      WHERE rel.id = $1
+      GROUP BY p.name;
+    `, [relativeId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Relative not found or no reports available" });
+    }
+
+    res.json(rows[0]); // מחזיר את שם המטופל והדיווחים שלו
+  } catch (err) {
+    console.error("❌ Failed to fetch relative reports:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

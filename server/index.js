@@ -42,6 +42,51 @@ app.post('/submit-report', async (req, res) => {
     pulse
   } = req.body;
 
+app.get("/reported-patients", async (req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT 
+        p.id,
+        p.name,
+        COALESCE(json_agg(r.content) FILTER (WHERE r.content IS NOT NULL), '[]') AS reports
+      FROM patients p
+      LEFT JOIN reports r ON p.id = r.patient_id
+      GROUP BY p.id, p.name
+      ORDER BY p.id;
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Failed to fetch reported patients:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/relative/:relativeId/reports", async (req, res) => {
+  const { relativeId } = req.params;
+  try {
+    const { rows } = await pool.query(`
+      SELECT 
+        p.name AS patient_name,
+        COALESCE(json_agg(r.content) FILTER (WHERE r.content IS NOT NULL), '[]') AS reports
+      FROM relatives rel
+      JOIN patients p ON rel.patient_id = p.id
+      LEFT JOIN reports r ON p.id = r.patient_id
+      WHERE rel.id = $1
+      GROUP BY p.name;
+    `, [relativeId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Relative not found or no reports available" });
+    }
+
+    res.json(rows[0]); // מחזיר את שם המטופל והדיווחים שלו
+  } catch (err) {
+    console.error("❌ Failed to fetch relative reports:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
   try {
     await pool.query(
       `INSERT INTO daily_reports 

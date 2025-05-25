@@ -12,3 +12,9 @@ CREATE TABLE patients (
     phone VARCHAR(20),
     FOREIGN KEY (therapist_id) REFERENCES therapists(id)
 );
+
+CREATE TABLE IF NOT EXISTS relatives (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  patient_id INTEGER REFERENCES patients(id) ON DELETE CASCADE
+);

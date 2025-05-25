@@ -5,36 +5,20 @@ export default function ReportedPatients() {
   const [patients, setPatients] = useState([]);
   const [expandedPatientId, setExpandedPatientId] = useState(null);
 
-  useEffect(() => {
-    const mockPatients = [
-      {
-        id: 1,
-        name: "דניאל כהן",
-        reports: ["הרגשתי עצב הבוקר", "עבר עליי יום קשה", "הייתה לי שיחה טובה עם חברה"],
-      },
-      {
-        id: 2,
-        name: "נועה לוי",
-        reports: ["שבוע חיובי", "הצלחתי להתמודד עם לחץ"],
-      },
-      {
-        id: 3,
-        name: "אורי בן דוד",
-        reports: ["לא ישנתי טוב", "הייתי עצבני בצהריים"],
-      },
-      {
-        id: 4,
-        name: "ליאן מזרחי",
-        reports: ["הרגשתי שמחה כשיצאתי לריצה"],
-      },
-      {
-        id: 5,
-        name: "תומר רז",
-        reports: [],
-      },
-    ];
-    setPatients(mockPatients);
-  }, []);
+useEffect(() => {
+  const fetchPatients = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/reported-patients");
+      const data = await res.json();
+      setPatients(data);
+    } catch (error) {
+      console.error("❌ Failed to fetch patients:", error);
+    }
+  };
+
+  fetchPatients();
+}, []);
+
 
   const togglePatient = (id) => {
     setExpandedPatientId((prevId) => (prevId === id ? null : id));

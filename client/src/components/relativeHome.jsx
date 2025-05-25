@@ -1,47 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import "./relativeReports.css";
+import React, { useEffect, useState } from 'react';
+import './therapistHome.css'; // או relativeHome.css אם יש לך
 
-export default function RelativeReports() {
-  const { relativeId } = useParams();
-  const [patientName, setPatientName] = useState("");
+export default function RelativeHome() {
   const [reports, setReports] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/relative/${relativeId}/reports`);
-        const data = await res.json();
-        if (res.ok) {
-          setPatientName(data.patient_name);
-          setReports(data.reports);
-        } else {
-          setError(data.error || "שגיאה בטעינת הדיווחים");
-        }
-      } catch (err) {
-        console.error("❌ Error fetching relative reports:", err);
-        setError("שגיאה בחיבור לשרת");
-      }
-    };
-
-    fetchReports();
-  }, [relativeId]);
+    fetch('http://localhost:3000/reports-by-therapist/1')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('📦 data from server:', data);
+        setReports(data);
+      })
+      .catch((err) => {
+        console.error('❌ שגיאה בטעינת דוחות:', err);
+      });
+  }, []);
 
   return (
-    <div className="relative-container">
-      <div className="relative-box">
-        <h2>דיווחים של {patientName}</h2>
-        {error ? (
-          <p className="error">{error}</p>
-        ) : reports.length > 0 ? (
-          <ul>
-            {reports.map((report, idx) => (
-              <li key={idx}>{report}</li>
-            ))}
-          </ul>
+    <div className="home-container">
+      <div className="home-box">
+        <h1>📋 דוחות קרובי משפחה</h1>
+
+        {reports.length === 0 ? (
+          <p>לא נמצאו דוחות להצגה.</p>
         ) : (
-          <p className="no-reports">אין דיווחים</p>
+          reports.map((r) => (
+            <div key={r.id} className="report-card">
+              <p>👤 <strong>{r.patient_name}</strong></p>
+              <p>🧠 מצב רוח: <strong>{r.mood}/10</strong></p>
+              <p>💊 תרופות: {r.took_meds ? '✅ כן' : '❌ לא'}</p>
+              <p>🏠 סביבה בטוחה: {r.safe_env ? '✅ כן' : '❌ לא'}</p>
+              <p>🎯 טריגרים: {r.had_triggers ? '🟠 כן' : '⚪ לא'}</p>
+              {r.feelings && <p>😶 רגשות שעלו: {r.feelings}</p>}
+              {r.text && <p>📝 שיתוף חופשי: {r.text}</p>}
+              <p>🛌 שינה: {r.sleep_hours} שעות</p>
+              <p>❤️ דופק: {r.pulse}</p>
+              <hr />
+            </div>
+          ))
         )}
       </div>
     </div>

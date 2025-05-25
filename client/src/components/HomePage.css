@@ -89,9 +89,13 @@
     background-color: #64b5f6;
     color: white;
   }
+  .relative{
+    background-color: #64b5f6;
+    color: white;
+  }
   
   .therapist:hover {
-    background-color: #42a5f5;
+    background-color: #533788;
     transform: scale(1.05);
   }
   

@@ -85,4 +85,14 @@
       padding: 12px 20px;
     }
   }
+  .therapist {
+    background-color: #64b5f6;
+    color: white;
+  }
+  
+  .therapist:hover {
+    background-color: #42a5f5;
+    transform: scale(1.05);
+  }
+  
   

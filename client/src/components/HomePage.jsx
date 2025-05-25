@@ -12,6 +12,9 @@ export default function HomePage() {
         <div className="buttons">
           <button className="daily" onClick={() => navigate('/daily-share')}>שיתוף יומיומי</button>
           <button className="crisis" onClick={() => navigate('/crisis-report')}>דיווח על משבר</button>
+          <button className="therapist" onClick={() => navigate('/therapistHome')}>מטפל</button> {/* ← חדש */}
+          
+
         </div>
       </div>
     </div>

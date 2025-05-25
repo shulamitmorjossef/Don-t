@@ -95,8 +95,33 @@ const seedData = async () => {
   }
 };
 
+const createDailyReportsTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS daily_reports (
+        id SERIAL PRIMARY KEY,
+        patient_id INTEGER REFERENCES patients(id) ON DELETE CASCADE,
+        mood INTEGER NOT NULL,
+        took_meds BOOLEAN,
+        safe_env BOOLEAN,
+        had_triggers BOOLEAN,
+        feelings TEXT[],
+        text TEXT,
+        sleep_hours REAL,
+        pulse INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log("✅ Table 'daily_reports' created or already exists.");
+  } catch (err) {
+    console.error("❌ Error creating 'daily_reports' table:", err);
+    throw err;
+  }
+};
+
 const initTherapyTables = async () => {
   try {
+    await createDailyReportsTable();
     await createTherapistsTable();
     await createPatientsTable();
     await createRelativesTable();
@@ -109,4 +134,12 @@ const initTherapyTables = async () => {
   }
 };
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> 7cce84998f42f20a95bc24d3df21479acc3c3c55
 initTherapyTables();

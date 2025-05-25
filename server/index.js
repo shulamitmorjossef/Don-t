@@ -42,7 +42,6 @@ app.post('/submit-report', async (req, res) => {
     pulse
   } = req.body;
 
-<<<<<<< HEAD
 app.get("/reported-patients", async (req, res) => {
   try {
     const { rows } = await pool.query(`
@@ -88,7 +87,6 @@ app.get("/relative/:relativeId/reports", async (req, res) => {
 });
 
 
-=======
   try {
     await pool.query(
       `INSERT INTO daily_reports 
@@ -102,7 +100,6 @@ app.get("/relative/:relativeId/reports", async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
->>>>>>> 7cce84998f42f20a95bc24d3df21479acc3c3c55
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

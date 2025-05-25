@@ -134,12 +134,9 @@ const initTherapyTables = async () => {
   }
 };
 
-<<<<<<< HEAD
-=======
 
 
 
 
 
->>>>>>> 7cce84998f42f20a95bc24d3df21479acc3c3c55
 initTherapyTables();

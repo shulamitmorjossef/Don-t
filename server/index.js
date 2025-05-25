@@ -10,6 +10,37 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.get('/reports-by-therapist/:therapistId', async (req, res) => {
+  const { therapistId } = req.params;
+
+  try {
+    const result = await pool.query(`
+      SELECT 
+        r.id AS report_id,
+        r.patient_id,
+        p.name AS patient_name,
+        r.mood,
+        r.took_meds,
+        r.safe_env,
+        r.had_triggers,
+        r.feelings,
+        r.text,
+        r.sleep_hours,
+        r.pulse,
+        r.created_at -- אם יש תאריך יצירה
+      FROM daily_reports r
+      JOIN patients p ON r.patient_id = p.id
+      WHERE p.therapist_id = $1
+      ORDER BY r.id DESC
+    `, [therapistId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('❌ Error fetching full reports:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.get('/reports', async (req, res) => {
   try {
     const result = await pool.query(`
@@ -30,7 +61,6 @@ app.get('/reports', async (req, res) => {
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from server using import!' });
 });
-
 app.post('/submit-report', async (req, res) => {
   const {
     patient_id,
@@ -135,6 +165,34 @@ app.get("/relative/:relativeId/reports", async (req, res) => {
 //   }
 // });
 
+// דוגמה לנתיב חדש
+app.get('/therapist-patients/:id', async (req, res) => {
+  const therapistId = req.params.id;
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, name FROM patients WHERE therapist_id = $1',
+      [therapistId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+});
+
+app.get('/reports-by-patient/:id', async (req, res) => {
+  const patientId = req.params.id;
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM daily_reports WHERE patient_id = $1 ORDER BY created_at DESC`,
+      [patientId]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'שגיאה בשרת' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -5,7 +5,7 @@ import DailyShare from './components/DailyShare';
 import CrisisReport from './components/CrisisReport';
 import Therapist from './components/therapistHome';
 import ReportedPatients from './components/reportedPatients';
-// import AddProgram from './components/addProgram';
+import RelativeHome from './components/relativeHome';
 
 export default function App() {
   return (
@@ -16,6 +16,8 @@ export default function App() {
         <Route path="/crisis-report" element={<CrisisReport />} />
         <Route path="/therapist" element={<Therapist />} />
         <Route path="/reportedPatients" element={<ReportedPatients />} />
+        <Route path="/relativeHome" element={<RelativeHome />} />
+
         {/* <Route path="/addProgram" element={<AddProgram />} /> */}
       </Routes>
     </Router>

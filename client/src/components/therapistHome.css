@@ -1,0 +1,67 @@
+/* מיכל כללי */
+.daily-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(to right, #e8f5e9, #e0f2f1);
+  padding: 40px 20px;
+  direction: rtl;
+  box-sizing: border-box;
+}
+
+/* קופסה מלבנית במרכז */
+.daily-box {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* כותרת עליונה */
+.daily-box h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* שורת כפתורים תחתונה */
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.buttons-row button {
+  background-color: #64b5f6;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttons-row button:hover {
+  background-color: #42a5f5;
+}
+
+/* רספונסיביות לנייד */
+@media (max-width: 600px) {
+  .buttons-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttons-row button {
+    width: 100%;
+  }
+}

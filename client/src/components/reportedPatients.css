@@ -1,0 +1,66 @@
+.therapist-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #f2f2f2;
+  padding: 40px 20px;
+  direction: rtl;
+  box-sizing: border-box;
+}
+
+.therapist-box {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+}
+
+.therapist-box h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.patient-card {
+  background-color: #fafafa;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 1px solid #ddd;
+}
+
+.patient-card:hover {
+  background-color: #f0f0f0;
+}
+
+.patient-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.patient-card ul {
+  margin-top: 15px;
+  padding-right: 20px;
+}
+
+.patient-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.no-reports {
+  color: #999;
+  font-style: italic;
+  margin-top: 10px;
+}

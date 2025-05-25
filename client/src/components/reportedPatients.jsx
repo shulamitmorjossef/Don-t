@@ -8,7 +8,7 @@ export default function ReportedPatients() {
 useEffect(() => {
   const fetchPatients = async () => {
     try {
-      const res = await fetch("http://localhost:3000/reported-patients");
+      const res = await fetch("http://localhost:3000/reports");
       const data = await res.json();
       setPatients(data);
     } catch (error) {

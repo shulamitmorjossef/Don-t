@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
 app.get('/reports', async (req, res) => {
   try {
     const result = await pool.query(`
@@ -29,6 +30,7 @@ app.get('/reports', async (req, res) => {
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from server using import!' });
 });
+
 app.post('/submit-report', async (req, res) => {
   const {
     patient_id,
@@ -100,6 +102,7 @@ app.get("/relative/:relativeId/reports", async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div className="home-container">
       <div className="home-box">
-        <h1>שלום לך, מה תרצה לעשות היום?</h1>
+        <h1>שלום לך, מה תרצה לעשות היום</h1>
         <div className="buttons">
           <button className="daily" onClick={() => navigate('/daily-share')}>שיתוף יומיומי</button>
           <button className="crisis" onClick={() => navigate('/crisis-report')}>דיווח על משבר</button>

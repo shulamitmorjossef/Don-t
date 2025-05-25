@@ -103,6 +103,39 @@ app.get("/relative/:relativeId/reports", async (req, res) => {
   }
 });
 
+// app.get("/reported-patients", async (req, res) => {
+//   try {
+//     const { rows } = await pool.query(`
+//       SELECT 
+//         p.id,
+//         p.name,
+//         COALESCE(json_agg(dr.*) FILTER (WHERE dr.id IS NOT NULL), '[]') AS reports
+//       FROM patients p
+//       LEFT JOIN daily_reports dr ON p.id = dr.patient_id
+//       GROUP BY p.id, p.name
+//       ORDER BY p.id;
+
+//     `);
+//     res.json(rows);
+//   } catch (err) {
+//     console.error("❌ Failed to fetch reported patients:", err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
+
+// app.get("/reported-patients", async (req, res) => {
+//   try {
+//     const { rows } = await pool.query(`
+//       SELECT * FROM daily_reports;
+//     `);
+//     res.json(rows);
+//   } catch (err) {
+//     console.error("❌ Failed to fetch reported patients:", err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
